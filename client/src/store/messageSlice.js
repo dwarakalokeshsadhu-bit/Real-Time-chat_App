@@ -4,6 +4,19 @@ import { api } from '../api';
 const isExpired = (message) =>
   message.expiresAt && new Date(message.expiresAt).getTime() <= Date.now();
 
+const upsertMessage = (messages, nextMessage) => {
+  if (!nextMessage || isExpired(nextMessage)) return messages;
+
+  const exists = messages.some(message => message._id === nextMessage._id);
+  if (exists) {
+    return messages.map(message =>
+      message._id === nextMessage._id ? { ...message, ...nextMessage } : message
+    );
+  }
+
+  return [...messages, nextMessage];
+};
+
 export const useMessageStore = create((set, get) => ({
   messages: [],
 
@@ -24,7 +37,7 @@ async sendMessage(channelId, content, replyTo, fileUrl, fileType) {
     });
     
     set(state => ({
-      messages: [...state.messages, data.message].filter(message => !isExpired(message))
+      messages: upsertMessage(state.messages, data.message)
     }));
 
 
@@ -60,8 +73,9 @@ async sendMessage(channelId, content, replyTo, fileUrl, fileType) {
   },
 
   addMessage(message) {
-    if (isExpired(message)) return;
-    set({ messages: [...get().messages, message] });
+    set({
+      messages: upsertMessage(get().messages, message)
+    });
   },
 
   updateMessage(updated) {

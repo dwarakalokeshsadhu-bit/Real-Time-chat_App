@@ -22,13 +22,13 @@ export default function CallPanel({ channelId }) {
 
   const attachLocalStream = (stream) => {
     localStreamRef.current = stream;
-    if (localVideoRef.current) {
+    if (localVideoRef.current && localVideoRef.current.srcObject !== stream) {
       localVideoRef.current.srcObject = stream;
     }
   };
 
   const attachRemoteStream = () => {
-    if (remoteVideoRef.current) {
+    if (remoteVideoRef.current && remoteVideoRef.current.srcObject !== remoteStreamRef.current) {
       remoteVideoRef.current.srcObject = remoteStreamRef.current;
     }
   };
@@ -43,6 +43,8 @@ export default function CallPanel({ channelId }) {
     peerRef.current = null;
     stopLocalStream();
     remoteStreamRef.current = new MediaStream();
+    if (localVideoRef.current) localVideoRef.current.srcObject = null;
+    if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null;
     setIncomingCall(null);
     setStatus('idle');
     setRemotePeerId(null);
@@ -72,7 +74,13 @@ export default function CallPanel({ channelId }) {
 
     peer.ontrack = (event) => {
       event.streams[0].getTracks().forEach(track => {
-        remoteStreamRef.current.addTrack(track);
+        const alreadyAdded = remoteStreamRef.current
+          .getTracks()
+          .some(existingTrack => existingTrack.id === track.id);
+
+        if (!alreadyAdded) {
+          remoteStreamRef.current.addTrack(track);
+        }
       });
       attachRemoteStream();
     };
@@ -87,7 +95,7 @@ export default function CallPanel({ channelId }) {
     };
 
     peer.onconnectionstatechange = () => {
-      if (['failed', 'closed', 'disconnected'].includes(peer.connectionState)) {
+      if (['failed', 'closed'].includes(peer.connectionState)) {
         resetCall();
       }
     };
@@ -220,9 +228,11 @@ export default function CallPanel({ channelId }) {
   }, [channelId, incomingCall, status]);
 
   useEffect(() => {
-    attachLocalStream(localStreamRef.current);
-    attachRemoteStream();
-  });
+    if (status !== 'idle') {
+      attachLocalStream(localStreamRef.current);
+      attachRemoteStream();
+    }
+  }, [status, callType]);
 
   useEffect(() => resetCall, [channelId]);
 
