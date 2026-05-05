@@ -1,0 +1,15 @@
+import { Router } from 'express';
+import { currentUser, login, logout, oauthCallback, refreshToken, register, searchUsers, startOAuth, updateAvatar } from '../controllers/auth.js';
+import { requireAuth } from '../middleware/auth.js';
+import { upload } from '../middleware/upload.js';
+const router = Router();
+router.post('/register', register);
+router.post('/login', login);
+router.post('/logout', requireAuth, logout);
+router.get('/current-user', requireAuth, currentUser);
+router.get('/users/search', requireAuth, searchUsers);
+router.post('/avatar', requireAuth, upload.single('avatar'), updateAvatar);
+router.post('/refresh-token', refreshToken);
+router.get('/:provider/callback', oauthCallback);
+router.get('/:provider', startOAuth);
+export default router;

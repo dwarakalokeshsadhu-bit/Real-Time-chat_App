@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { getDMMessages, listDMs, sendDMMessage, startDM } from '../controllers/dm.js';
+import { requireAuth } from '../middleware/auth.js';
+const router = Router();
+router.use(requireAuth);
+router.get('/', listDMs);
+router.post('/', startDM);
+router.get('/:dmId', getDMMessages);
+router.post('/:dmId', sendDMMessage);
+export default router;
