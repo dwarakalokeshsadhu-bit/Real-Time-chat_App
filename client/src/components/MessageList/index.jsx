@@ -8,8 +8,12 @@ import data from '@emoji-mart/data';
 export default function MessageList({ messages, channelId, setReply }) {
 
   const fetchMessages = useMessageStore(s => s.fetchMessages);
+  const editMessage = useMessageStore(s => s.editMessage);
+  const deleteMessage = useMessageStore(s => s.deleteMessage);
   const user = useAuthStore(s => s.user);
   const [openPicker, setOpenPicker] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editContent, setEditContent] = useState("");
   const bottomRef = useRef();
 
   // 🔥 auto scroll
@@ -21,6 +25,18 @@ export default function MessageList({ messages, channelId, setReply }) {
     await api.post(`/messages/${channelId}/${messageId}/reactions`, { emoji });
     await fetchMessages(channelId);
     setOpenPicker(null);
+  }
+
+  async function saveEdit(messageId) {
+    if (!editContent.trim()) return;
+    await editMessage(channelId, messageId, editContent);
+    setEditingId(null);
+    setEditContent("");
+  }
+
+  async function remove(messageId) {
+    if (!window.confirm("Delete this message?")) return;
+    await deleteMessage(channelId, messageId);
   }
 
   return (
@@ -52,9 +68,28 @@ export default function MessageList({ messages, channelId, setReply }) {
               </div>
             )}
 
-            {/* 🔥 Actual message */}
-            {m.content && (
-              <p className="message-text">{m.content}</p>
+            {editingId === m._id ? (
+              <div className="edit-message-box">
+                <textarea
+                  value={editContent}
+                  onChange={(event) => setEditContent(event.target.value)}
+                  autoFocus
+                />
+                <div className="edit-message-actions">
+                  <button onClick={() => saveEdit(m._id)}>Save</button>
+                  <button onClick={() => {
+                    setEditingId(null);
+                    setEditContent("");
+                  }}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : m.content && (
+              <p className="message-text">
+                {m.content}
+                {m.editedAt && <span className="edited-label"> edited</span>}
+              </p>
             )}
 
             {/* 🔥 File preview */}
@@ -106,6 +141,22 @@ export default function MessageList({ messages, channelId, setReply }) {
             {/* 🔥 Actions */}
             <div className="actions">
               <button onClick={() => setReply(m)}>Reply</button>
+
+              {isMine && m.content && (
+                <button onClick={() => {
+                  setEditingId(m._id);
+                  setEditContent(m.content);
+                  setOpenPicker(null);
+                }}>
+                  Edit
+                </button>
+              )}
+
+              {isMine && (
+                <button className="delete-message-btn" onClick={() => remove(m._id)}>
+                  Delete
+                </button>
+              )}
 
               <button onClick={() =>
                 setOpenPicker(openPicker === m._id ? null : m._id)

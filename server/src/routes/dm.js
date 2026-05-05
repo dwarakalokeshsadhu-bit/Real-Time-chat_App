@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getDMMessages, listDMs, sendDMMessage, startDM } from '../controllers/dm.js';
+import { deleteDMMessage, editDMMessage, getDMMessages, listDMs, sendDMMessage, startDM } from '../controllers/dm.js';
 import { requireAuth } from '../middleware/auth.js';
 const router = Router();
 router.use(requireAuth);
@@ -7,4 +7,6 @@ router.get('/', listDMs);
 router.post('/', startDM);
 router.get('/:dmId', getDMMessages);
 router.post('/:dmId', sendDMMessage);
+router.put('/:dmId/:messageId', editDMMessage);
+router.delete('/:dmId/:messageId', deleteDMMessage);
 export default router;

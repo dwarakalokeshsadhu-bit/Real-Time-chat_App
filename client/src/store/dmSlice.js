@@ -51,5 +51,39 @@ export const useDMStore = create((set, get) => ({
 
     const { data } = await api.post(`/dm/${activeDM._id}`, { content });
     set((state) => ({ dmMessages: [...state.dmMessages, data.message] }));
+  },
+
+  addDMMessage: (message) => {
+    set((state) => ({ dmMessages: [...state.dmMessages, message] }));
+  },
+
+  updateDMMessage: (updated) => {
+    set((state) => ({
+      dmMessages: state.dmMessages.map(message =>
+        message._id === updated._id ? updated : message
+      )
+    }));
+  },
+
+  removeDMMessage: (messageId) => {
+    set((state) => ({
+      dmMessages: state.dmMessages.filter(message => message._id !== messageId)
+    }));
+  },
+
+  editDMMessage: async (messageId, content) => {
+    const activeDM = get().activeDM;
+    if (!activeDM || !content.trim()) return;
+
+    const { data } = await api.put(`/dm/${activeDM._id}/${messageId}`, { content });
+    get().updateDMMessage(data.message);
+  },
+
+  deleteDMMessage: async (messageId) => {
+    const activeDM = get().activeDM;
+    if (!activeDM) return;
+
+    await api.delete(`/dm/${activeDM._id}/${messageId}`);
+    get().removeDMMessage(messageId);
   }
 }));

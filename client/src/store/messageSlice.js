@@ -35,6 +35,30 @@ async sendMessage(channelId, content, replyTo, fileUrl, fileType) {
   }
 },
 
+  async editMessage(channelId, messageId, content) {
+    try {
+      const { data } = await api.put(`/messages/${channelId}/${messageId}`, {
+        content
+      });
+
+      get().updateMessage(data.message);
+      return data.message;
+    } catch (err) {
+      console.log("EDIT ERROR:", err.response?.data || err.message);
+      throw err.response?.data?.message || "Edit failed";
+    }
+  },
+
+  async deleteMessage(channelId, messageId) {
+    try {
+      await api.delete(`/messages/${channelId}/${messageId}`);
+      get().removeMessage(messageId);
+    } catch (err) {
+      console.log("DELETE ERROR:", err.response?.data || err.message);
+      throw err.response?.data?.message || "Delete failed";
+    }
+  },
+
   addMessage(message) {
     if (isExpired(message)) return;
     set({ messages: [...get().messages, message] });

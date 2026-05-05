@@ -41,6 +41,10 @@ fileType: {
 expiresAt: {
   type: Date,
   default: null
+},
+editedAt: {
+  type: Date,
+  default: null
 }
 }, { timestamps: true });
 

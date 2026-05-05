@@ -17,6 +17,7 @@ export const socket = io(socketUrl, {
 export const useSocket = (channelId) => {
   const addMessage = useMessageStore(s => s.addMessage);
   const updateMessage = useMessageStore(s => s.updateMessage);
+  const removeMessage = useMessageStore(s => s.removeMessage);
   const fetchMessages = useMessageStore(s => s.fetchMessages);
   const replaceChannel = useChannelStore(s => s.replaceChannel);
   const user = useAuthStore(s => s.user);
@@ -40,6 +41,10 @@ export const useSocket = (channelId) => {
       updateMessage(msg);
     };
 
+    const handleMessageDeleted = ({ messageId }) => {
+      removeMessage(messageId);
+    };
+
     const handleChannelUpdated = (channel) => {
       replaceChannel(channel);
       fetchMessages(channelId);
@@ -55,6 +60,8 @@ export const useSocket = (channelId) => {
 
     socket.on("newMessage", handleNewMessage);
     socket.on("reactionUpdate", handleReaction);
+    socket.on("messageUpdated", handleReaction);
+    socket.on("messageDeleted", handleMessageDeleted);
     socket.on("channelUpdated", handleChannelUpdated);
     socket.on("presence:update", handlePresenceUpdate);
     socket.on("typing:update", handleTypingUpdate);
@@ -62,6 +69,8 @@ export const useSocket = (channelId) => {
     return () => {
       socket.off("newMessage", handleNewMessage);
       socket.off("reactionUpdate", handleReaction);
+      socket.off("messageUpdated", handleReaction);
+      socket.off("messageDeleted", handleMessageDeleted);
       socket.off("channelUpdated", handleChannelUpdated);
       socket.off("presence:update", handlePresenceUpdate);
       socket.off("typing:update", handleTypingUpdate);
@@ -74,6 +83,7 @@ export const useSocket = (channelId) => {
     user,
     addMessage,
     updateMessage,
+    removeMessage,
     fetchMessages,
     replaceChannel,
     setOnlineUsers,

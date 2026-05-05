@@ -1,21 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../../store/authSlice';
 import { useDMStore } from '../../store/dmSlice';
+import { socket } from '../../hooks/useSocket';
 
 export default function DMView() {
   const user = useAuthStore(s => s.user);
   const activeDM = useDMStore(s => s.activeDM);
   const messages = useDMStore(s => s.dmMessages);
   const sendDMMessage = useDMStore(s => s.sendDMMessage);
+  const editDMMessage = useDMStore(s => s.editDMMessage);
+  const deleteDMMessage = useDMStore(s => s.deleteDMMessage);
+  const addDMMessage = useDMStore(s => s.addDMMessage);
+  const updateDMMessage = useDMStore(s => s.updateDMMessage);
+  const removeDMMessage = useDMStore(s => s.removeDMMessage);
   const [content, setContent] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editContent, setEditContent] = useState('');
 
   const other = activeDM?.participants?.find(participant => participant._id !== user?.id);
+
+  useEffect(() => {
+    if (!activeDM?._id) return;
+
+    socket.emit('dm:join', activeDM._id);
+
+    const handleNewMessage = (message) => {
+      if (message.senderId === user?.username) return;
+      addDMMessage(message);
+    };
+    const handleUpdate = (message) => updateDMMessage(message);
+    const handleDelete = ({ messageId }) => removeDMMessage(messageId);
+
+    socket.on('message:new', handleNewMessage);
+    socket.on('message:update', handleUpdate);
+    socket.on('message:delete', handleDelete);
+
+    return () => {
+      socket.off('message:new', handleNewMessage);
+      socket.off('message:update', handleUpdate);
+      socket.off('message:delete', handleDelete);
+      socket.emit('dm:leave', activeDM._id);
+    };
+  }, [activeDM?._id, user?.username, addDMMessage, updateDMMessage, removeDMMessage]);
 
   async function submit(event) {
     event.preventDefault();
     if (!content.trim()) return;
     await sendDMMessage(content);
     setContent('');
+  }
+
+  async function saveEdit(messageId) {
+    if (!editContent.trim()) return;
+    await editDMMessage(messageId, editContent);
+    setEditingId(null);
+    setEditContent('');
+  }
+
+  async function remove(messageId) {
+    if (!window.confirm('Delete this message?')) return;
+    await deleteDMMessage(messageId);
   }
 
   if (!activeDM) return null;
@@ -42,7 +86,43 @@ export default function DMView() {
                       <div className="message-user">{message.senderId}</div>
                     </div>
                   )}
-                  <p className="message-text">{message.content}</p>
+                  {editingId === message._id ? (
+                    <div className="edit-message-box">
+                      <textarea
+                        value={editContent}
+                        onChange={event => setEditContent(event.target.value)}
+                        autoFocus
+                      />
+                      <div className="edit-message-actions">
+                        <button onClick={() => saveEdit(message._id)}>Save</button>
+                        <button onClick={() => {
+                          setEditingId(null);
+                          setEditContent('');
+                        }}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="message-text">
+                      {message.content}
+                      {message.editedAt && <span className="edited-label"> edited</span>}
+                    </p>
+                  )}
+
+                  {isMine && (
+                    <div className="actions">
+                      <button onClick={() => {
+                        setEditingId(message._id);
+                        setEditContent(message.content);
+                      }}>
+                        Edit
+                      </button>
+                      <button className="delete-message-btn" onClick={() => remove(message._id)}>
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );

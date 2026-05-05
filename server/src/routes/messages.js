@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMessages, sendMessage, addReaction } from "../controllers/messages.js";
+import { getMessages, sendMessage, addReaction, editMessage, deleteMessage } from "../controllers/messages.js";
 import { upload } from "../middleware/upload.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -25,6 +25,8 @@ router.post("/upload", upload.single("file"), (req, res) => {
 //
 router.get("/:channelId", getMessages);
 router.post("/:channelId", sendMessage);
+router.put("/:channelId/:messageId", editMessage);
+router.delete("/:channelId/:messageId", deleteMessage);
 router.post("/:channelId/:messageId/reactions", addReaction);
 
 export default router;

@@ -3,6 +3,22 @@ import Channel from "../models/Channel.js";
 import { ApiError } from "../utils/errors.js";
 import { getIO } from "../sockets/index.js";
 
+async function assertMessageOwner(messageId, username) {
+  const message = await Message.findById(messageId);
+  if (!message) throw new ApiError(404, "Message not found");
+
+  const channel = await Channel.findById(message.channelId);
+  if (!channel || !channel.members.includes(username)) {
+    throw new ApiError(403, "Private channel");
+  }
+
+  if (message.senderId !== username) {
+    throw new ApiError(403, "You can only change your own messages");
+  }
+
+  return { message, channel };
+}
+
 // 🔹 Get messages for a channel
 export const getMessages = async (req, res) => {
   try {
@@ -105,5 +121,47 @@ export const addReaction = async (req, res) => {
   } catch (err) {
     console.log("REACTION ERROR:", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const editMessage = async (req, res) => {
+  try {
+    const { messageId } = req.params;
+    const { content } = req.body;
+
+    if (!content?.trim()) {
+      return res.status(400).json({ message: "Message content required" });
+    }
+
+    const { message } = await assertMessageOwner(messageId, req.user.username);
+    message.content = content.trim();
+    message.editedAt = new Date();
+    await message.save();
+
+    const io = getIO();
+    io.to(message.channelId.toString()).emit("messageUpdated", message);
+
+    res.json({ success: true, message });
+  } catch (err) {
+    console.log("EDIT MESSAGE ERROR:", err);
+    res.status(err.statusCode || 500).json({ message: err.message || "Server error" });
+  }
+};
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const { messageId } = req.params;
+    const { message } = await assertMessageOwner(messageId, req.user.username);
+    const channelId = message.channelId.toString();
+
+    await message.deleteOne();
+
+    const io = getIO();
+    io.to(channelId).emit("messageDeleted", { messageId });
+
+    res.json({ success: true, messageId });
+  } catch (err) {
+    console.log("DELETE MESSAGE ERROR:", err);
+    res.status(err.statusCode || 500).json({ message: err.message || "Server error" });
   }
 };

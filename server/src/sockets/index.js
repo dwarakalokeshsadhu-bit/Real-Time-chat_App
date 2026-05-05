@@ -42,6 +42,14 @@ export function initSocket(httpServer) {
   socket.leave(channelId);
 });
 
+    socket.on("dm:join", (dmId) => {
+      socket.join(`dm:${dmId}`);
+    });
+
+    socket.on("dm:leave", (dmId) => {
+      socket.leave(`dm:${dmId}`);
+    });
+
     socket.on("typing:start", ({ channelId, username }) => {
       if (!channelId || !username) return;
       socket.to(channelId).emit("typing:update", {

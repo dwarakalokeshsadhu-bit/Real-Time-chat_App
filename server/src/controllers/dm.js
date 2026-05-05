@@ -62,3 +62,42 @@ export const sendDMMessage = asyncHandler(async (req, res) => {
   req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:new', message);
   res.status(201).json({ success: true, message });
 });
+
+export const editDMMessage = asyncHandler(async (req, res) => {
+  await getOwnedDM(req.params.dmId, req.user._id);
+
+  const message = await Message.findOne({
+    _id: req.params.messageId,
+    dmId: req.params.dmId
+  });
+
+  if (!message) throw new ApiError(404, 'Message not found');
+  if (message.senderId !== req.user.username) throw new ApiError(403, 'You can only edit your own messages');
+  if (!req.body.content?.trim()) throw new ApiError(400, 'Message content required');
+
+  message.content = req.body.content.trim();
+  message.editedAt = new Date();
+  await message.save();
+
+  req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:update', message);
+  res.json({ success: true, message });
+});
+
+export const deleteDMMessage = asyncHandler(async (req, res) => {
+  await getOwnedDM(req.params.dmId, req.user._id);
+
+  const message = await Message.findOne({
+    _id: req.params.messageId,
+    dmId: req.params.dmId
+  });
+
+  if (!message) throw new ApiError(404, 'Message not found');
+  if (message.senderId !== req.user.username) throw new ApiError(403, 'You can only delete your own messages');
+
+  await message.deleteOne();
+
+  req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:delete', {
+    messageId: req.params.messageId
+  });
+  res.json({ success: true, messageId: req.params.messageId });
+});
