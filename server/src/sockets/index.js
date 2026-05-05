@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import { env } from "../config/env.js";
 
 let io;
 const onlineUsers = new Map();
@@ -6,8 +7,9 @@ const onlineUsers = new Map();
 export function initSocket(httpServer) {
   io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5173",
-      methods: ["GET", "POST"]
+      origin: env.CLIENT_URLS,
+      methods: ["GET", "POST"],
+      credentials: true
     }
   });
 
