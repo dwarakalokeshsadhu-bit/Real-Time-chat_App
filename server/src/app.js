@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { env } from './config/env.js';
+import { corsOptions } from './config/cors.js';
 import authRoutes from './routes/auth.js';
 import channelRoutes from './routes/channels.js';
 import messageRoutes from './routes/messages.js';
@@ -10,10 +10,8 @@ import fileRoutes from './routes/files.js';
 import { errorMiddleware } from './utils/errors.js';
 
 const app = express();
-app.use(cors({
-  origin: env.CLIENT_URLS,
-  credentials: true
-}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
