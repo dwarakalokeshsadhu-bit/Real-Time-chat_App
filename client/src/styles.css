@@ -1901,3 +1901,160 @@ body {
   background: #4bca81;
   box-shadow: 0 0 0 2px rgba(75, 202, 129, 0.18);
 }
+
+/* Hard override for deployed chat workspace */
+body,
+.public-page,
+.workspace,
+.main,
+.chat-container,
+.messages-area {
+  background: #f4f6f9 !important;
+  background-image: none !important;
+  color: #16325c !important;
+}
+
+.sidebar {
+  background: #16325c !important;
+  border-color: #e0e5ee !important;
+  color: #ffffff !important;
+}
+
+.chat-header,
+.input-area,
+.input-container {
+  background: #ffffff !important;
+  border-color: #e0e5ee !important;
+  color: #16325c !important;
+}
+
+.chat-header h2,
+.channel-meta,
+.message-user,
+.message-text,
+.dm-search,
+.chat-input,
+.channel-input,
+.disappearing-select {
+  color: #16325c !important;
+}
+
+.profile-card,
+.members-box,
+.disappearing-box,
+.create-channel-box {
+  background: rgba(216, 237, 255, 0.16) !important;
+  border-color: rgba(224, 229, 238, 0.42) !important;
+  box-shadow: none !important;
+}
+
+.channel,
+.dm-item,
+.dm-results button,
+.logout,
+.members-toggle,
+.call-actions button,
+.incoming-call button,
+.voice-btn,
+.actions button,
+.edit-message-actions button,
+.create-actions button:last-child {
+  background: #e0e5ee !important;
+  background-image: none !important;
+  border-color: #d8edff !important;
+  color: #16325c !important;
+  box-shadow: none !important;
+}
+
+.channel.active,
+.dm-item.active,
+.send-btn,
+.create-actions button:first-child,
+.download-btn {
+  background: #0070d2 !important;
+  background-image: none !important;
+  border-color: #0070d2 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.message,
+.message.mine {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.message-card,
+.message.mine .message-card {
+  background: #ffffff !important;
+  background-image: none !important;
+  border-color: #e0e5ee !important;
+  color: #16325c !important;
+  box-shadow: none !important;
+}
+
+.message:nth-child(odd) .message-card,
+.message.mine:nth-child(odd) .message-card {
+  background: #d8edff !important;
+}
+
+.input-row,
+.chat-input,
+.channel-input,
+.dm-search,
+.auth input,
+.input input,
+.edit-message-box textarea {
+  background: #ffffff !important;
+  border-color: #e0e5ee !important;
+  color: #16325c !important;
+}
+
+.reply-box,
+.reply-preview-bar,
+.voice-preview-bar,
+.voice-message,
+.file-info,
+.incoming-call,
+.call-stage {
+  background: #ffffff !important;
+  background-image: none !important;
+  border-color: #e0e5ee !important;
+  color: #16325c !important;
+}
+
+.online-dot,
+.member-presence.online {
+  background: #4bca81 !important;
+}
+
+.error,
+.call-error,
+.voice-error,
+.recording-indicator {
+  color: #c23934 !important;
+}
+
+.call-actions .end-call-btn,
+.voice-btn.recording,
+.actions .delete-message-btn {
+  background: #c23934 !important;
+  border-color: #c23934 !important;
+  color: #ffffff !important;
+}
+
+.file-btn {
+  color: #0070d2 !important;
+  background: #d8edff !important;
+  border: 1px solid #0070d2 !important;
+  border-radius: 8px !important;
+  display: inline-grid !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  place-items: center !important;
+}
+
+.file-btn:hover {
+  background: #0070d2 !important;
+  color: #ffffff !important;
+}
