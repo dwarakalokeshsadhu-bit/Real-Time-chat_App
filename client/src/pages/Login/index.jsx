@@ -14,8 +14,8 @@ export default function Login({ switchMode }) {
   }
   return <div className="auth"><form onSubmit={submit}>
     <h1>Login</h1>{error && <p className="error">{error}</p>}
-    <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-    <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+    <input placeholder="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+    <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
     <button>Login</button>
     <div className="social-auth">
       <button type="button" onClick={() => loginWithProvider('google')}>Continue with Google</button>

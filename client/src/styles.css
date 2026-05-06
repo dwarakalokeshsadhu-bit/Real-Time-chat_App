@@ -603,6 +603,98 @@ body {
   color: var(--text);
 }
 
+.public-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: rgba(18, 14, 10, 0.92);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+
+.app-navbar button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(29, 23, 16, 0.86);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.app-navbar button:hover,
+.app-navbar button.active {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent-strong));
+  color: #fff;
+}
+
+.public-page .home-page,
+.public-page .auth {
+  flex: 1;
+  min-height: auto;
+}
+
+.team-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 36px;
+  background: rgba(18, 14, 10, 0.96);
+  border-top: 1px solid var(--line);
+}
+
+.team-footer h2,
+.team-footer p {
+  margin: 0;
+}
+
+.footer-kicker {
+  color: var(--olive);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.team-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.team-links a {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: rgba(29, 23, 16, 0.76);
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.team-links a:hover {
+  border-color: var(--olive);
+  color: #f3f7c7;
+}
+
 .home-page {
   min-height: 100vh;
   display: grid;
@@ -1054,6 +1146,26 @@ body {
 }
 
 @media (max-width: 760px) {
+  .app-navbar {
+    justify-content: stretch;
+  }
+
+  .app-navbar button {
+    flex: 1;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+
+  .team-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 22px;
+  }
+
+  .team-links {
+    justify-content: flex-start;
+  }
+
   .home-page {
     padding: 22px;
   }

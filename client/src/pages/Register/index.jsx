@@ -12,9 +12,9 @@ export default function Register({ switchMode }) {
   }
   return <div className="auth"><form onSubmit={submit}>
     <h1>Register</h1>{error && <p className="error">{error}</p>}
-    <input placeholder="Username" value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} />
-    <input placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
-    <input placeholder="Password" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
+    <input placeholder="Username" value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} required />
+    <input placeholder="Email" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+    <input placeholder="Password" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
     <button>Register</button><p onClick={switchMode}>Already have account?</p>
   </form></div>;
 }
