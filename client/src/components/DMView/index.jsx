@@ -62,6 +62,21 @@ export default function DMView() {
     await deleteDMMessage(messageId);
   }
 
+  const getSenderAvatar = (message) => {
+    if (message.senderAvatarUrl) return message.senderAvatarUrl;
+    if (message.senderId === user?.username) return user?.avatarUrl || '';
+    return activeDM?.participants?.find(participant => participant.username === message.senderId)?.avatarUrl || '';
+  };
+
+  const formatMessageDate = (value) =>
+    value
+      ? new Date(value).toLocaleDateString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric'
+        })
+      : '';
+
   if (!activeDM) return null;
 
   return (
@@ -80,12 +95,19 @@ export default function DMView() {
             return (
               <div key={message._id} className={isMine ? 'message mine' : 'message'}>
                 <div className="message-card">
-                  {!isMine && (
-                    <div className="message-user-row">
-                      <div className="message-avatar">{(message.senderId || 'U').charAt(0).toUpperCase()}</div>
-                      <div className="message-user">{message.senderId}</div>
+                  <div className="message-user-row">
+                    <div className="message-avatar">
+                      {getSenderAvatar(message) ? (
+                        <img src={getSenderAvatar(message)} alt={message.senderId || 'User'} />
+                      ) : (
+                        <span>{(message.senderId || 'U').charAt(0).toUpperCase()}</span>
+                      )}
                     </div>
-                  )}
+                    <div className="message-meta">
+                      <span className="message-user">{message.senderId}</span>
+                      <span className="message-date">{formatMessageDate(message.createdAt)}</span>
+                    </div>
+                  </div>
                   {editingId === message._id ? (
                     <div className="edit-message-box">
                       <textarea

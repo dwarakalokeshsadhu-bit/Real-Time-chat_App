@@ -1,7 +1,26 @@
 import Message from "../models/Message.js";
 import Channel from "../models/Channel.js";
+import User from "../models/User.js";
 import { ApiError } from "../utils/errors.js";
 import { getIO } from "../sockets/index.js";
+
+async function withSenderProfiles(messages) {
+  const list = Array.isArray(messages) ? messages : [messages];
+  const users = await User.find({
+    username: { $in: [...new Set(list.map(message => message.senderId).filter(Boolean))] }
+  }).select("username avatarUrl");
+  const profiles = new Map(users.map(user => [user.username, user]));
+
+  const enriched = list.map(message => {
+    const plain = typeof message.toObject === "function" ? message.toObject() : message;
+    return {
+      ...plain,
+      senderAvatarUrl: profiles.get(plain.senderId)?.avatarUrl || ""
+    };
+  });
+
+  return Array.isArray(messages) ? enriched : enriched[0];
+}
 
 async function assertMessageOwner(messageId, username) {
   const message = await Message.findById(messageId);
@@ -37,7 +56,7 @@ export const getMessages = async (req, res) => {
       .populate('replyTo')
       .sort({ createdAt: 1 });
 
-    res.json({ success: true, messages });
+    res.json({ success: true, messages: await withSenderProfiles(messages) });
 
   } catch (err) {
     console.log("GET MESSAGES ERROR:", err);
@@ -74,9 +93,10 @@ export const sendMessage = async (req, res) => {
 
     // 🔥 EMIT HERE (inside try)
     const io = getIO();
-    io.to(channelId).emit("newMessage", message);
+    const messageWithProfile = await withSenderProfiles(message);
+    io.to(channelId).emit("newMessage", messageWithProfile);
 
-    res.status(201).json({ success: true, message });
+    res.status(201).json({ success: true, message: messageWithProfile });
 
   } catch (err) {
     console.log("SEND MESSAGE ERROR:", err);
@@ -114,9 +134,10 @@ export const addReaction = async (req, res) => {
 
     // 🔥 EMIT HERE (inside try)
     const io = getIO();
-    io.to(message.channelId.toString()).emit("reactionUpdate", message);
+    const messageWithProfile = await withSenderProfiles(message);
+    io.to(message.channelId.toString()).emit("reactionUpdate", messageWithProfile);
 
-    res.json({ success: true, message });
+    res.json({ success: true, message: messageWithProfile });
 
   } catch (err) {
     console.log("REACTION ERROR:", err);
@@ -139,9 +160,10 @@ export const editMessage = async (req, res) => {
     await message.save();
 
     const io = getIO();
-    io.to(message.channelId.toString()).emit("messageUpdated", message);
+    const messageWithProfile = await withSenderProfiles(message);
+    io.to(message.channelId.toString()).emit("messageUpdated", messageWithProfile);
 
-    res.json({ success: true, message });
+    res.json({ success: true, message: messageWithProfile });
   } catch (err) {
     console.log("EDIT MESSAGE ERROR:", err);
     res.status(err.statusCode || 500).json({ message: err.message || "Server error" });

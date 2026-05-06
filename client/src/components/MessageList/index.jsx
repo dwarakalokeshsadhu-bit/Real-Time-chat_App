@@ -39,6 +39,15 @@ export default function MessageList({ messages, channelId, setReply }) {
     await deleteMessage(channelId, messageId);
   }
 
+  const formatMessageDate = (value) =>
+    value
+      ? new Date(value).toLocaleDateString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric'
+        })
+      : '';
+
   return (
     <div className="messages">
 
@@ -53,10 +62,19 @@ export default function MessageList({ messages, channelId, setReply }) {
             {/* 🔥 Username */}
             <div className="message-user-row">
               <div className="message-avatar">
-                {(m.senderId || 'U').charAt(0).toUpperCase()}
+                {m.senderAvatarUrl ? (
+                  <img src={m.senderAvatarUrl} alt={m.senderId || 'User'} />
+                ) : (
+                  <span>{(m.senderId || 'U').charAt(0).toUpperCase()}</span>
+                )}
               </div>
-              <div className="message-user">
-                {m.senderId || 'User'}
+              <div className="message-meta">
+                <span className="message-user">
+                  {m.senderId || 'User'}
+                </span>
+                <span className="message-date">
+                  {formatMessageDate(m.createdAt)}
+                </span>
               </div>
             </div>
 

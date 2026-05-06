@@ -17,6 +17,9 @@ export default function Sidebar() {
     fetchChannels
   } = useChannelStore();
   const clearActiveDM = useDMStore(s => s.clearActiveDM);
+  const activeDM = useDMStore(s => s.activeDM);
+  const fetchDMs = useDMStore(s => s.fetchDMs);
+  const fetchDMMessages = useDMStore(s => s.fetchDMMessages);
 
   const { user, logout, uploadAvatar } = useAuthStore();
   const fetchMessages = useMessageStore(s => s.fetchMessages);
@@ -107,6 +110,9 @@ export default function Sidebar() {
 
     try {
       await uploadAvatar(file);
+      if (activeChannel?._id) await fetchMessages(activeChannel._id);
+      if (activeDM?._id) await fetchDMMessages(activeDM._id);
+      await fetchDMs();
       toast.success("Profile picture updated");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to upload profile picture");

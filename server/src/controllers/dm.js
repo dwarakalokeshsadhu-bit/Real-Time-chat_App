@@ -1,6 +1,25 @@
 import DirectMessage from '../models/DirectMessage.js';
 import Message from '../models/Message.js';
+import User from '../models/User.js';
 import { ApiError, asyncHandler } from '../utils/errors.js';
+
+async function withSenderProfiles(messages) {
+  const list = Array.isArray(messages) ? messages : [messages];
+  const users = await User.find({
+    username: { $in: [...new Set(list.map(message => message.senderId).filter(Boolean))] }
+  }).select('username avatarUrl');
+  const profiles = new Map(users.map(user => [user.username, user]));
+
+  const enriched = list.map(message => {
+    const plain = typeof message.toObject === 'function' ? message.toObject() : message;
+    return {
+      ...plain,
+      senderAvatarUrl: profiles.get(plain.senderId)?.avatarUrl || ''
+    };
+  });
+
+  return Array.isArray(messages) ? enriched : enriched[0];
+}
 
 async function getOwnedDM(dmId, userId) {
   const dm = await DirectMessage.findOne({
@@ -46,7 +65,7 @@ export const getDMMessages = asyncHandler(async (req, res) => {
     .sort({ createdAt: 1 })
     .limit(100);
 
-  res.json({ success: true, messages });
+  res.json({ success: true, messages: await withSenderProfiles(messages) });
 });
 
 export const sendDMMessage = asyncHandler(async (req, res) => {
@@ -59,8 +78,9 @@ export const sendDMMessage = asyncHandler(async (req, res) => {
   });
 
   await DirectMessage.findByIdAndUpdate(req.params.dmId, { lastMessageAt: new Date() });
-  req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:new', message);
-  res.status(201).json({ success: true, message });
+  const messageWithProfile = await withSenderProfiles(message);
+  req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:new', messageWithProfile);
+  res.status(201).json({ success: true, message: messageWithProfile });
 });
 
 export const editDMMessage = asyncHandler(async (req, res) => {
@@ -79,8 +99,9 @@ export const editDMMessage = asyncHandler(async (req, res) => {
   message.editedAt = new Date();
   await message.save();
 
-  req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:update', message);
-  res.json({ success: true, message });
+  const messageWithProfile = await withSenderProfiles(message);
+  req.app.get('io')?.to(`dm:${req.params.dmId}`).emit('message:update', messageWithProfile);
+  res.json({ success: true, message: messageWithProfile });
 });
 
 export const deleteDMMessage = asyncHandler(async (req, res) => {
