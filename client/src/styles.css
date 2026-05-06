@@ -589,10 +589,10 @@
   --line: #3a2f24;
   --text: #fff7ed;
   --muted-warm: #c6b59f;
-  --accent: #d85b2a;
-  --accent-strong: #f06a32;
-  --accent-dark: #9f3519;
-  --olive: #bdc77c;
+  --accent: #0070d2;
+  --accent-strong: #005fb2;
+  --accent-dark: #004f98;
+  --olive: #4bca81;
   --online: #91c46c;
 }
 
@@ -771,7 +771,7 @@ body {
 
 .home-primary {
   background: linear-gradient(135deg, var(--accent-dark), var(--accent-strong));
-  border: 1px solid #f07d45;
+  border: 1px solid #0070d2;
   color: #fff;
   box-shadow: 0 14px 28px rgba(216, 91, 42, 0.26);
 }
@@ -943,7 +943,7 @@ body {
 .incoming-call button:hover,
 .voice-btn:hover {
   border-color: var(--accent);
-  color: #ffd4bc;
+  color: #d8edff;
 }
 
 .channel {
@@ -1084,7 +1084,7 @@ body {
 
 .message.mine .message-card {
   background: linear-gradient(135deg, var(--accent-dark), var(--accent-strong));
-  border-color: #f07d45;
+  border-color: #0070d2;
 }
 
 .message-user-row {
@@ -1105,7 +1105,7 @@ body {
   display: grid;
   place-items: center;
   color: #1a120c;
-  background: #ead0b5;
+  background: #d8edff;
   font-weight: 800;
 }
 
@@ -1153,7 +1153,7 @@ body {
 .create-actions button:first-child {
   background: linear-gradient(135deg, var(--accent-dark), var(--accent-strong));
   color: white;
-  border: 1px solid #f07d45;
+  border: 1px solid #0070d2;
   border-radius: 10px;
 }
 
@@ -1358,15 +1358,15 @@ body {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #ead0b5;
+  background: #d8edff;
   color: #1a120c;
   font-weight: 800;
   object-fit: cover;
 }
 
 .dm-item.active {
-  border-color: var(--accent, #d85b2a);
-  color: #ffd4bc;
+  border-color: var(--accent, #0070d2);
+  color: #d8edff;
 }
 
 /* Cloud chat theme */
@@ -1698,4 +1698,206 @@ body {
   background: #c23934;
   border-color: #c23934;
   color: #ffffff;
+}
+
+/* Final cloud workspace pass */
+.home-page,
+.about-page,
+.chat-container {
+  background: #f4f6f9;
+}
+
+.home-visual {
+  background: #ffffff;
+  border-color: #e0e5ee;
+}
+
+.workspace {
+  background: #f4f6f9;
+}
+
+.sidebar {
+  background: #16325c;
+  border-color: #e0e5ee;
+  color: #ffffff;
+}
+
+.sidebar h2,
+.sidebar h3,
+.sidebar .muted,
+.sidebar .profile-name,
+.sidebar .profile-action,
+.sidebar .members-title,
+.sidebar .members-empty,
+.sidebar .disappearing-toggle {
+  color: #ffffff;
+}
+
+.sidebar .profile-action,
+.sidebar .create-btn,
+.sidebar .typing-indicator {
+  color: #4bca81;
+}
+
+.profile-card,
+.members-box,
+.disappearing-box,
+.create-channel-box {
+  background: rgba(224, 229, 238, 0.14);
+  border-color: rgba(216, 237, 255, 0.32);
+}
+
+.channel,
+.dm-item,
+.dm-results button,
+.members-toggle,
+.logout,
+.create-actions button:last-child,
+.disappearing-select {
+  background: #e0e5ee;
+  border-color: #d8edff;
+  color: #16325c;
+}
+
+.channel.active,
+.dm-item.active,
+.create-actions button:first-child,
+.send-btn,
+.download-btn {
+  background: #0070d2;
+  border-color: #0070d2;
+  color: #ffffff;
+}
+
+.channel-count {
+  color: #d8edff;
+}
+
+.chat-header {
+  background: #ffffff;
+  border-color: #e0e5ee;
+  color: #16325c;
+}
+
+.chat-header h2,
+.channel-meta {
+  color: #16325c;
+}
+
+.messages-area {
+  background: #f4f6f9;
+}
+
+.message-card {
+  background: #ffffff;
+  color: #16325c;
+  border-bottom: 1px solid #e0e5ee;
+}
+
+.message:nth-child(odd) .message-card {
+  background: #d8edff;
+}
+
+.message.mine .message-card {
+  background: #ffffff;
+  color: #16325c;
+}
+
+.message.mine:nth-child(odd) .message-card {
+  background: #d8edff;
+}
+
+.message-user,
+.message-text {
+  color: #16325c;
+}
+
+.message-date,
+.edited-label,
+.reply-text,
+.file-name,
+.voice-message span {
+  color: #5f7194;
+}
+
+.message-avatar,
+.avatar-picker,
+.dm-results img,
+.dm-item img,
+.dm-results span:first-child,
+.dm-item span:first-child {
+  background: #d8edff;
+  border-color: #e0e5ee;
+  color: #16325c;
+}
+
+.input-area,
+.input-container {
+  background: #ffffff;
+  border-color: #e0e5ee;
+}
+
+.input-row,
+.chat-input,
+.channel-input,
+.dm-search,
+.auth input,
+.input input,
+.edit-message-box textarea {
+  background: #ffffff;
+  border-color: #e0e5ee;
+  color: #16325c;
+}
+
+.reply-box,
+.reply-preview-bar,
+.voice-preview-bar,
+.voice-message,
+.file-info,
+.incoming-call,
+.call-stage {
+  background: #ffffff;
+  border-color: #e0e5ee;
+  color: #16325c;
+}
+
+.reply-box,
+.reply-preview-bar {
+  border-left-color: #0070d2;
+}
+
+.voice-preview-bar {
+  border-left-color: #c23934;
+}
+
+.call-actions button,
+.incoming-call button,
+.voice-btn,
+.actions button,
+.edit-message-actions button {
+  background: #e0e5ee;
+  border-color: #d8edff;
+  color: #16325c;
+}
+
+.call-actions button:hover,
+.incoming-call button:hover,
+.voice-btn:hover,
+.actions button:hover,
+.edit-message-actions button:hover,
+.members-toggle:hover {
+  border-color: #0070d2;
+  color: #0070d2;
+}
+
+.call-actions button:nth-child(2) {
+  background: #d8edff;
+  border-color: #0070d2;
+  color: #16325c;
+}
+
+.online-dot,
+.member-presence.online {
+  background: #4bca81;
+  box-shadow: 0 0 0 2px rgba(75, 202, 129, 0.18);
 }
