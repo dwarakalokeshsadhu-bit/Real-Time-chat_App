@@ -21,7 +21,7 @@ function githubSearchUrl(name) {
 export default function App() {
   const user = useAuthStore(s => s.user);
   const applyAuthCallback = useAuthStore(s => s.applyAuthCallback);
-  const [mode, setMode] = useState('home');
+  const [mode, setMode] = useState(() => (user ? 'workspace' : 'home'));
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -38,7 +38,13 @@ export default function App() {
     }
   }, [applyAuthCallback]);
 
-  if (user) return <Workspace />;
+  useEffect(() => {
+    if (user && (mode === 'login' || mode === 'register')) {
+      setMode('workspace');
+    }
+  }, [mode, user]);
+
+  const showFooter = mode !== 'workspace';
 
   return (
     <div className="public-page">
@@ -64,9 +70,20 @@ export default function App() {
         >
           Required Fields
         </button>
+        {user && (
+          <button
+            type="button"
+            className={mode === 'workspace' ? 'active' : ''}
+            onClick={() => setMode('workspace')}
+          >
+            Chat
+          </button>
+        )}
       </nav>
 
-      {mode === 'home' ? (
+      {mode === 'workspace' && user ? (
+        <Workspace />
+      ) : mode === 'home' ? (
         <Home
           goToLogin={() => setMode('login')}
           goToRegister={() => setMode('register')}
@@ -77,19 +94,21 @@ export default function App() {
         <Register switchMode={() => setMode('login')} />
       )}
 
-      <footer className="team-footer">
-        <div>
-          <p className="footer-kicker">Git profiles</p>
-          <h2>Team members</h2>
-        </div>
-        <div className="team-links">
-          {teamMembers.map(member => (
-            <a key={member} href={githubSearchUrl(member)} target="_blank" rel="noreferrer">
-              {member}
-            </a>
-          ))}
-        </div>
-      </footer>
+      {showFooter && (
+        <footer className="team-footer">
+          <div>
+            <p className="footer-kicker">Git profiles</p>
+            <h2>Team members</h2>
+          </div>
+          <div className="team-links">
+            {teamMembers.map(member => (
+              <a key={member} href={githubSearchUrl(member)} target="_blank" rel="noreferrer">
+                {member}
+              </a>
+            ))}
+          </div>
+        </footer>
+      )}
     </div>
   );
 }

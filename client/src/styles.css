@@ -647,6 +647,12 @@ body {
   min-height: auto;
 }
 
+.public-page .workspace {
+  flex: 1;
+  height: auto;
+  min-height: calc(100vh - 71px);
+}
+
 .team-footer {
   display: flex;
   align-items: center;
