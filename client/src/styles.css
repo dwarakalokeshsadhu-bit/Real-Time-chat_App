@@ -614,6 +614,7 @@ body {
   top: 0;
   z-index: 20;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
   padding: 14px 20px;
@@ -642,6 +643,7 @@ body {
 }
 
 .public-page .home-page,
+.public-page .about-page,
 .public-page .auth {
   flex: 1;
   min-height: auto;
@@ -801,6 +803,77 @@ body {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.about-page {
+  display: grid;
+  align-items: center;
+  padding: 48px 36px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(189, 199, 124, 0.12), transparent 26%),
+    radial-gradient(circle at 86% 18%, rgba(216, 91, 42, 0.14), transparent 28%),
+    linear-gradient(135deg, #15110c 0%, #0f0c08 56%, #17100b 100%);
+}
+
+.about-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 1.18fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.about-copy {
+  display: grid;
+  gap: 18px;
+}
+
+.about-copy h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(34px, 4.6vw, 54px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.about-copy p {
+  margin: 0;
+  color: var(--muted-warm);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.feature-card {
+  min-height: 118px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(42, 34, 24, 0.9), rgba(28, 23, 16, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.feature-card span {
+  width: 32px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--olive);
+}
+
+.feature-card p {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.5;
 }
 
 .workspace {
@@ -1157,7 +1230,7 @@ body {
   }
 
   .app-navbar button {
-    flex: 1;
+    flex: 1 1 112px;
     padding: 0 8px;
     font-size: 14px;
   }
@@ -1176,17 +1249,28 @@ body {
     padding: 22px;
   }
 
-  .home-shell {
+  .about-page {
+    padding: 28px 22px;
+  }
+
+  .home-shell,
+  .about-shell {
     grid-template-columns: 1fr;
     gap: 28px;
   }
 
-  .home-copy h1 {
+  .home-copy h1,
+  .about-copy h1 {
     font-size: 42px;
   }
 
-  .home-subtitle {
+  .home-subtitle,
+  .about-copy p {
     font-size: 16px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
   }
 
   .home-actions button {
