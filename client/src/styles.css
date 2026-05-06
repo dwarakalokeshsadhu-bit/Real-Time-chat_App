@@ -603,6 +603,108 @@ body {
   color: var(--text);
 }
 
+.home-page {
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  padding: 36px;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(216, 91, 42, 0.18), transparent 30%),
+    radial-gradient(circle at 88% 12%, rgba(189, 199, 124, 0.12), transparent 24%),
+    linear-gradient(135deg, #15110c 0%, #0f0c08 56%, #17100b 100%);
+}
+
+.home-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(360px, 1.12fr);
+  gap: 52px;
+  align-items: center;
+}
+
+.home-copy {
+  display: grid;
+  gap: 20px;
+}
+
+.home-kicker {
+  margin: 0;
+  color: var(--olive);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-copy h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(42px, 6vw, 70px);
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.home-subtitle {
+  max-width: 580px;
+  margin: 0;
+  color: var(--muted-warm);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.home-actions button {
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.home-primary {
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent-strong));
+  border: 1px solid #f07d45;
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(216, 91, 42, 0.26);
+}
+
+.home-primary:hover {
+  filter: brightness(1.08);
+}
+
+.home-secondary {
+  background: rgba(29, 23, 16, 0.72);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.home-secondary:hover {
+  border-color: var(--olive);
+  color: #f3f7c7;
+}
+
+.home-visual {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(42, 34, 24, 0.86), rgba(19, 15, 10, 0.96));
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+  overflow: hidden;
+}
+
+.home-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .workspace {
   background: transparent;
 }
@@ -952,6 +1054,27 @@ body {
 }
 
 @media (max-width: 760px) {
+  .home-page {
+    padding: 22px;
+  }
+
+  .home-shell {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .home-copy h1 {
+    font-size: 42px;
+  }
+
+  .home-subtitle {
+    font-size: 16px;
+  }
+
+  .home-actions button {
+    flex: 1 1 150px;
+  }
+
   .workspace {
     flex-direction: column;
   }

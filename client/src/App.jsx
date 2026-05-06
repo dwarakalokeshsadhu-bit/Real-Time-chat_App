@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Workspace from './pages/Workspace';
@@ -8,7 +9,7 @@ import { useAuthStore } from './store/authSlice';
 export default function App() {
   const user = useAuthStore(s => s.user);
   const applyAuthCallback = useAuthStore(s => s.applyAuthCallback);
-  const [mode, setMode] = useState('login');
+  const [mode, setMode] = useState('home');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -26,5 +27,16 @@ export default function App() {
   }, [applyAuthCallback]);
 
   if (user) return <Workspace />;
-  return mode === 'login' ? <Login switchMode={() => setMode('register')} /> : <Register switchMode={() => setMode('login')} />;
+  if (mode === 'home') {
+    return (
+      <Home
+        goToLogin={() => setMode('login')}
+        goToRegister={() => setMode('register')}
+      />
+    );
+  }
+
+  return mode === 'login'
+    ? <Login switchMode={() => setMode('register')} />
+    : <Register switchMode={() => setMode('login')} />;
 }
