@@ -7,6 +7,7 @@ import channelRoutes from './routes/channels.js';
 import messageRoutes from './routes/messages.js';
 import dmRoutes from './routes/dm.js';
 import fileRoutes from './routes/files.js';
+import aiWorkspaceRoutes from './routes/aiWorkspace.js';
 import { errorMiddleware } from './utils/errors.js';
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/v1/channels', channelRoutes);
 app.use('/api/v1/messages', messageRoutes);
 app.use('/api/v1/dm', dmRoutes);
 app.use('/api/v1/files', fileRoutes);
+app.use('/api/v1/ai-workspace', aiWorkspaceRoutes);
 app.use(errorMiddleware);
 
 

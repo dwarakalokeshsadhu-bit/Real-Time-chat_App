@@ -20,5 +20,6 @@ export const env = {
   MAX_FILE_SIZE_MB: Number(process.env.MAX_FILE_SIZE_MB || 10),
   API_URL: process.env.API_URL || `http://localhost:${process.env.PORT || 5000}`,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || ''
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY || ''
 };

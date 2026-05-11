@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MessageList from '../MessageList';
 import MessageInput from '../MessageInput';
 import CallPanel from '../CallPanel';
+import AIWorkspacePanel from '../AIWorkspacePanel';
 import { useMessageStore } from '../../store/messageSlice';
 import { useChannelStore } from '../../store/channelSlice';
 import { useAuthStore } from '../../store/authSlice';
@@ -53,6 +54,8 @@ export default function ChannelView({ channelId }) {
         </div>
         <CallPanel channelId={channelId} />
       </div>
+
+      <AIWorkspacePanel channelId={channelId} />
 
       <div className="messages-area">
         <MessageList

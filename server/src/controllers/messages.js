@@ -3,6 +3,7 @@ import Channel from "../models/Channel.js";
 import User from "../models/User.js";
 import { ApiError } from "../utils/errors.js";
 import { getIO } from "../sockets/index.js";
+import { processWorkspaceMessage } from "../services/workspaceAI.js";
 
 async function withSenderProfiles(messages) {
   const list = Array.isArray(messages) ? messages : [messages];
@@ -95,6 +96,9 @@ export const sendMessage = async (req, res) => {
     const io = getIO();
     const messageWithProfile = await withSenderProfiles(message);
     io.to(channelId).emit("newMessage", messageWithProfile);
+    processWorkspaceMessage({ channelId, message }).catch(err => {
+      console.error("[workspace-ai] message processing failed", err);
+    });
 
     res.status(201).json({ success: true, message: messageWithProfile });
 
