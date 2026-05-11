@@ -3154,6 +3154,44 @@ a.download-btn {
   white-space: nowrap !important;
 }
 
+.call-actions button,
+.incoming-call button {
+  min-width: 148px !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 18px !important;
+  background: var(--ref-panel) !important;
+  background-image: none !important;
+  border: 1px solid var(--ref-line) !important;
+  border-radius: 8px !important;
+  color: var(--ref-text) !important;
+  box-shadow: none !important;
+  font-family: var(--app-font) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.call-actions button:hover,
+.incoming-call button:hover {
+  background: var(--ref-panel-strong) !important;
+  border-color: var(--ref-coral-soft) !important;
+  color: var(--ref-coral-dark) !important;
+}
+
+.call-actions button:nth-child(2) {
+  background: #fff0ea !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+}
+
+.chat-header {
+  box-shadow: 0 1px 0 var(--ref-line) !important;
+}
+
 @media (max-width: 760px) {
   body:has(.workspace-mode),
   #root:has(.workspace-mode),
