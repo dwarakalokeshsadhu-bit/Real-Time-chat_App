@@ -3065,3 +3065,113 @@ body,
   background: #fff0ea !important;
   color: var(--ref-coral-dark) !important;
 }
+
+/* Final workspace alignment fixes */
+body:has(.workspace-mode) {
+  overflow: hidden !important;
+}
+
+#root:has(.workspace-mode) {
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+.public-page.workspace-mode {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.public-page.workspace-mode .workspace {
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.public-page.workspace-mode .sidebar {
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+}
+
+.public-page.workspace-mode .chat-container {
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.public-page.workspace-mode .messages-area {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-gutter: stable;
+}
+
+.public-page.workspace-mode .input-area {
+  flex: 0 0 auto !important;
+}
+
+.public-page.workspace-mode .messages-area::-webkit-scrollbar,
+.public-page.workspace-mode .sidebar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.public-page.workspace-mode .messages-area::-webkit-scrollbar-track,
+.public-page.workspace-mode .sidebar::-webkit-scrollbar-track {
+  background: #fff4ef;
+}
+
+.public-page.workspace-mode .messages-area::-webkit-scrollbar-thumb,
+.public-page.workspace-mode .sidebar::-webkit-scrollbar-thumb {
+  background: #f1b4a2;
+  border: 2px solid #fff4ef;
+  border-radius: 999px;
+}
+
+.file-info {
+  min-height: 72px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.download-btn,
+a.download-btn {
+  min-width: 138px !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  padding: 0 18px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 760px) {
+  body:has(.workspace-mode),
+  #root:has(.workspace-mode),
+  .public-page.workspace-mode {
+    overflow: hidden !important;
+  }
+
+  .public-page.workspace-mode .workspace {
+    height: 100dvh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .public-page.workspace-mode .sidebar {
+    max-height: 42dvh !important;
+  }
+
+  .public-page.workspace-mode .chat-container {
+    height: 58dvh !important;
+  }
+}
