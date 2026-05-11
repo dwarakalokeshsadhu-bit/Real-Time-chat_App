@@ -3188,6 +3188,37 @@ a.download-btn {
   color: var(--ref-text) !important;
 }
 
+.auth button,
+.auth form > button {
+  background: var(--ref-coral) !important;
+  background-image: none !important;
+  border: 1px solid var(--ref-coral) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(241, 135, 106, 0.24) !important;
+}
+
+.auth button:hover,
+.auth form > button:hover {
+  background: var(--ref-coral-dark) !important;
+  border-color: var(--ref-coral-dark) !important;
+}
+
+.social-auth button,
+.auth .social-auth button {
+  background: var(--ref-panel) !important;
+  background-image: none !important;
+  border: 1px solid var(--ref-line) !important;
+  color: var(--ref-text) !important;
+  box-shadow: none !important;
+}
+
+.social-auth button:hover,
+.auth .social-auth button:hover {
+  background: var(--ref-panel-strong) !important;
+  border-color: var(--ref-coral-soft) !important;
+  color: var(--ref-coral-dark) !important;
+}
+
 .chat-header {
   box-shadow: 0 1px 0 var(--ref-line) !important;
 }
