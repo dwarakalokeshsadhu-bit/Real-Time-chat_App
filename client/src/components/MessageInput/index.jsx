@@ -210,7 +210,7 @@ export default function MessageInput({ channelId, replyTo, clearReply }) {
         />
 
         <label className="file-btn" title="Attach file">
-          Attach
+          File
           <input
             type="file"
             hidden
@@ -227,7 +227,7 @@ export default function MessageInput({ channelId, replyTo, clearReply }) {
           onClick={isRecording ? stopRecording : startRecording}
           title={isRecording ? "Stop recording" : "Record voice message"}
         >
-          {isRecording ? "Stop" : "Mic"}
+          {isRecording ? "Stop" : "Voice"}
         </button>
 
         <button type="submit" className="send-btn" disabled={isRecording}>

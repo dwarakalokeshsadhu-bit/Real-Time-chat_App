@@ -89,51 +89,48 @@ export default function App() {
     if (user && (mode === 'login' || mode === 'register')) {
       setMode('workspace');
     }
+    if (!user && mode === 'workspace') {
+      setMode('home');
+    }
   }, [mode, user]);
 
-  const showFooter = mode !== 'workspace';
+  const showPublicChrome = !user && mode !== 'workspace';
+  const showFooter = showPublicChrome;
 
   return (
-    <div className="public-page">
-      <nav className="app-navbar" aria-label="Primary navigation">
-        <button
-          type="button"
-          className={mode === 'home' ? 'active' : ''}
-          onClick={() => setMode('home')}
-        >
-          Home
-        </button>
-        <button
-          type="button"
-          className={mode === 'about' ? 'active' : ''}
-          onClick={() => setMode('about')}
-        >
-          About
-        </button>
-        <button
-          type="button"
-          className={mode === 'login' ? 'active' : ''}
-          onClick={() => setMode('login')}
-        >
-          Login
-        </button>
-        <button
-          type="button"
-          className={mode === 'register' ? 'active' : ''}
-          onClick={() => setMode('register')}
-        >
-          Required Fields
-        </button>
-        {user && (
+    <div className={mode === 'workspace' && user ? 'public-page workspace-mode' : 'public-page'}>
+      {showPublicChrome && (
+        <nav className="app-navbar" aria-label="Primary navigation">
           <button
             type="button"
-            className={mode === 'workspace' ? 'active' : ''}
-            onClick={() => setMode('workspace')}
+            className={mode === 'home' ? 'active' : ''}
+            onClick={() => setMode('home')}
           >
-            Chat
+            Home
           </button>
-        )}
-      </nav>
+          <button
+            type="button"
+            className={mode === 'about' ? 'active' : ''}
+            onClick={() => setMode('about')}
+          >
+            About
+          </button>
+          <button
+            type="button"
+            className={mode === 'login' ? 'active' : ''}
+            onClick={() => setMode('login')}
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            className={mode === 'register' ? 'active' : ''}
+            onClick={() => setMode('register')}
+          >
+            Required Fields
+          </button>
+        </nav>
+      )}
 
       {mode === 'workspace' && user ? (
         <Workspace />

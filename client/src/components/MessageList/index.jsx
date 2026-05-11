@@ -48,6 +48,12 @@ export default function MessageList({ messages, channelId, setReply }) {
         })
       : '';
 
+  const getSenderAvatar = (message) => {
+    if (message.senderAvatarUrl) return message.senderAvatarUrl;
+    if (message.senderId === user?.username) return user?.avatarUrl || '';
+    return '';
+  };
+
   return (
     <div className="messages">
 
@@ -62,8 +68,8 @@ export default function MessageList({ messages, channelId, setReply }) {
             {/* 🔥 Username */}
             <div className="message-user-row">
               <div className="message-avatar">
-                {m.senderAvatarUrl ? (
-                  <img src={m.senderAvatarUrl} alt={m.senderId || 'User'} />
+                {getSenderAvatar(m) ? (
+                  <img src={getSenderAvatar(m)} alt={m.senderId || 'User'} />
                 ) : (
                   <span>{(m.senderId || 'U').charAt(0).toUpperCase()}</span>
                 )}
