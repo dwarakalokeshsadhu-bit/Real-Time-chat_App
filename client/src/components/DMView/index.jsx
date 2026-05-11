@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from '../../store/authSlice';
 import { useDMStore } from '../../store/dmSlice';
 import { socket } from '../../hooks/useSocket';
@@ -16,6 +16,10 @@ export default function DMView() {
   const [content, setContent] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editContent, setEditContent] = useState('');
+  const scrollContainerRef = useRef(null);
+  const bottomRef = useRef(null);
+  const shouldStickToBottomRef = useRef(true);
+  const previousDMRef = useRef(activeDM?._id);
 
   const other = activeDM?.participants?.find(participant => participant._id !== user?.id);
 
@@ -42,6 +46,40 @@ export default function DMView() {
       socket.emit('dm:leave', activeDM._id);
     };
   }, [activeDM?._id, user?.username, addDMMessage, updateDMMessage, removeDMMessage]);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const distanceFromBottom =
+        scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
+      shouldStickToBottomRef.current = distanceFromBottom < 140;
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (previousDMRef.current !== activeDM?._id) {
+      previousDMRef.current = activeDM?._id;
+      shouldStickToBottomRef.current = true;
+    }
+  }, [activeDM?._id]);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    const isOwnNewMessage = lastMessage?.senderId === user?.username;
+
+    if (shouldStickToBottomRef.current || isOwnNewMessage) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, user?.username]);
 
   async function submit(event) {
     event.preventDefault();
@@ -88,7 +126,7 @@ export default function DMView() {
         </div>
       </div>
 
-      <div className="messages-area">
+      <div className="messages-area" ref={scrollContainerRef}>
         <div className="messages">
           {messages.map(message => {
             const isMine = message.senderId === user?.username;
@@ -149,6 +187,7 @@ export default function DMView() {
               </div>
             );
           })}
+          <div ref={bottomRef}></div>
         </div>
       </div>
 

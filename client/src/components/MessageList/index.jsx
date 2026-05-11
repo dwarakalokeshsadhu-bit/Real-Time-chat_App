@@ -15,11 +15,43 @@ export default function MessageList({ messages, channelId, setReply }) {
   const [editingId, setEditingId] = useState(null);
   const [editContent, setEditContent] = useState("");
   const bottomRef = useRef();
+  const shouldStickToBottomRef = useRef(true);
+  const previousChannelRef = useRef(channelId);
 
   // 🔥 auto scroll
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    const scrollContainer = bottomRef.current?.closest(".messages-area");
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const distanceFromBottom =
+        scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
+      shouldStickToBottomRef.current = distanceFromBottom < 140;
+    };
+
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      scrollContainer.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (previousChannelRef.current !== channelId) {
+      previousChannelRef.current = channelId;
+      shouldStickToBottomRef.current = true;
+    }
+  }, [channelId]);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    const isOwnNewMessage = lastMessage?.senderId === user?.username;
+
+    if (shouldStickToBottomRef.current || isOwnNewMessage) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, user?.username]);
 
   async function react(messageId, emoji) {
     await api.post(`/messages/${channelId}/${messageId}/reactions`, { emoji });
