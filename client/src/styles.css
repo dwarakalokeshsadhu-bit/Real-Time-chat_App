@@ -2735,3 +2735,333 @@ body {
     width: 100%;
   }
 }
+
+/* Reference warm peach theme */
+:root {
+  --app-font: "Poppins", "Segoe UI", Arial, sans-serif;
+  --ref-bg: #fffaf8;
+  --ref-bg-soft: #fdf3ef;
+  --ref-surface: #ffffff;
+  --ref-panel: #fff4ef;
+  --ref-panel-strong: #fde2d8;
+  --ref-line: #f1d8cf;
+  --ref-coral: #f1876a;
+  --ref-coral-dark: #dc6f52;
+  --ref-coral-soft: #ffd9cd;
+  --ref-text: #26211f;
+  --ref-muted: #8f8782;
+  --ref-success: #5fcf94;
+  --ref-danger: #c9463d;
+}
+
+html,
+body,
+#root {
+  background: var(--ref-bg) !important;
+}
+
+body,
+button,
+input,
+select,
+textarea,
+a {
+  font-family: var(--app-font) !important;
+}
+
+body,
+.public-page,
+.workspace,
+.main,
+.chat-container,
+.messages-area,
+.home-page,
+.about-page {
+  background:
+    linear-gradient(180deg, #fffdfb 0%, var(--ref-bg) 42%, #fff5f1 100%) !important;
+  color: var(--ref-text) !important;
+}
+
+.app-navbar,
+.team-footer {
+  background: rgba(255, 250, 248, 0.94) !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+  box-shadow: 0 8px 26px rgba(220, 111, 82, 0.08) !important;
+}
+
+.app-navbar button,
+.team-links a {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--ref-muted) !important;
+  font-weight: 600 !important;
+}
+
+.app-navbar button:hover,
+.app-navbar button.active,
+.team-links a:hover {
+  background: var(--ref-panel) !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-coral-dark) !important;
+}
+
+.home-copy h1,
+.about-copy h1,
+.team-footer h2,
+.auth h1,
+.feature-card p,
+.chat-header h2,
+.message-user,
+.message-text,
+.sidebar-brand,
+.profile-name {
+  color: var(--ref-text) !important;
+}
+
+.home-kicker,
+.footer-kicker,
+.profile-action,
+.auth p,
+.typing-indicator,
+.selected-file-label,
+.create-btn {
+  color: var(--ref-coral) !important;
+}
+
+.home-subtitle,
+.about-copy p,
+.channel-meta,
+.message-date,
+.edited-label,
+.reply-text,
+.file-name,
+.voice-message span,
+.members-title,
+.members-empty,
+.selected-file-details,
+.muted {
+  color: var(--ref-muted) !important;
+}
+
+.home-primary,
+.send-btn,
+.download-btn,
+.create-actions button:first-child {
+  background: var(--ref-coral) !important;
+  border-color: var(--ref-coral) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(241, 135, 106, 0.24) !important;
+}
+
+.home-primary:hover,
+.send-btn:hover,
+.download-btn:hover {
+  background: var(--ref-coral-dark) !important;
+  border-color: var(--ref-coral-dark) !important;
+}
+
+.home-secondary,
+.file-btn,
+.voice-btn,
+.logout,
+.members-toggle,
+.actions button,
+.edit-message-actions button,
+.create-actions button:last-child,
+.selected-file-remove {
+  background: var(--ref-panel) !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+  box-shadow: none !important;
+}
+
+.home-secondary:hover,
+.file-btn:hover,
+.voice-btn:hover,
+.logout:hover,
+.members-toggle:hover,
+.actions button:hover,
+.edit-message-actions button:hover,
+.selected-file-remove:hover {
+  background: var(--ref-panel-strong) !important;
+  border-color: var(--ref-coral-soft) !important;
+  color: var(--ref-coral-dark) !important;
+}
+
+.sidebar {
+  background: #fff7f3 !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+  box-shadow: inset -1px 0 0 rgba(241, 216, 207, 0.7) !important;
+}
+
+.sidebar-brand {
+  color: var(--ref-coral-dark) !important;
+}
+
+.sidebar-brand:hover,
+.sidebar-brand:focus-visible {
+  color: var(--ref-text) !important;
+}
+
+.sidebar h2,
+.sidebar h3,
+.sidebar .muted,
+.sidebar .profile-name,
+.sidebar .members-title,
+.sidebar .members-empty,
+.sidebar .disappearing-toggle,
+.sidebar .team-footer p {
+  color: var(--ref-text) !important;
+}
+
+.sidebar .profile-card,
+.members-box,
+.disappearing-box,
+.create-channel-box,
+.auth form,
+.feature-card,
+.home-visual,
+.selected-file-preview,
+.voice-message,
+.file-info,
+.reply-preview-bar,
+.voice-preview-bar,
+.incoming-call,
+.call-stage {
+  background: var(--ref-surface) !important;
+  border-color: var(--ref-line) !important;
+  box-shadow: 0 12px 28px rgba(220, 111, 82, 0.1) !important;
+  color: var(--ref-text) !important;
+}
+
+.sidebar .profile-card {
+  background: #fff0ea !important;
+}
+
+.sidebar .avatar-picker,
+.message-avatar,
+.dm-results img,
+.dm-item img,
+.dm-results span:first-child,
+.dm-item span:first-child,
+.selected-file-thumb {
+  background: var(--ref-coral) !important;
+  border-color: #ffd8cd !important;
+  color: #ffffff !important;
+}
+
+.sidebar .avatar-picker:hover {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(241, 135, 106, 0.18) !important;
+}
+
+.channel,
+.dm-item,
+.dm-results button,
+.members-toggle,
+.logout,
+.create-actions button:last-child {
+  background: #fffaf8 !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+}
+
+.channel.active,
+.dm-item.active {
+  background: var(--ref-coral) !important;
+  border-color: var(--ref-coral) !important;
+  color: #ffffff !important;
+}
+
+.channel.active .channel-count,
+.channel.active span {
+  color: #ffffff !important;
+}
+
+.channel-count {
+  color: var(--ref-coral-dark) !important;
+}
+
+.chat-header,
+.input-area,
+.input-container {
+  background: rgba(255, 250, 248, 0.96) !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+}
+
+.message-card,
+.message.mine .message-card {
+  background: var(--ref-surface) !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+}
+
+.message:nth-child(odd) .message-card,
+.message.mine:nth-child(odd) .message-card {
+  background: var(--ref-panel) !important;
+}
+
+.reply-box,
+.reply-preview-bar {
+  border-left-color: var(--ref-coral) !important;
+}
+
+.voice-preview-bar {
+  border-left-color: var(--ref-coral-dark) !important;
+}
+
+.chat-input,
+.channel-input,
+.dm-search,
+.disappearing-select,
+.auth input,
+.input input,
+.edit-message-box textarea {
+  background: #ffffff !important;
+  border-color: var(--ref-line) !important;
+  color: var(--ref-text) !important;
+}
+
+.chat-input::placeholder,
+.channel-input::placeholder,
+.dm-search::placeholder,
+.auth input::placeholder {
+  color: #aaa29d !important;
+}
+
+.chat-input:focus,
+.channel-input:focus,
+.dm-search:focus,
+.disappearing-select:focus,
+.auth input:focus,
+.edit-message-box textarea:focus {
+  border-color: var(--ref-coral) !important;
+  box-shadow: 0 0 0 3px rgba(241, 135, 106, 0.16) !important;
+}
+
+.online-dot,
+.member-presence.online,
+.feature-card span {
+  background: var(--ref-success) !important;
+  box-shadow: 0 0 0 2px rgba(95, 207, 148, 0.2) !important;
+}
+
+.actions .delete-message-btn,
+.call-actions .end-call-btn,
+.voice-btn.recording {
+  background: var(--ref-danger) !important;
+  border-color: var(--ref-danger) !important;
+  color: #ffffff !important;
+}
+
+.selected-file-details strong {
+  color: var(--ref-text) !important;
+}
+
+.selected-file-thumb {
+  background: #fff0ea !important;
+  color: var(--ref-coral-dark) !important;
+}
