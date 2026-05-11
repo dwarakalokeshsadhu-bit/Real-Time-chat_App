@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useMessageStore } from '../../store/messageSlice';
 import { useAuthStore } from '../../store/authSlice';
 import { socket } from '../../hooks/useSocket';
@@ -14,6 +14,10 @@ export default function MessageInput({ channelId, replyTo, clearReply }) {
   const audioChunksRef = useRef([]);
   const streamRef = useRef(null);
   const typingTimerRef = useRef(null);
+  const selectedFileUrl = useMemo(() => {
+    if (!file || voiceUrl || !file.type?.startsWith("image/")) return null;
+    return URL.createObjectURL(file);
+  }, [file, voiceUrl]);
 
   const sendMessage = useMessageStore(s => s.sendMessage);
   const user = useAuthStore(s => s.user);
@@ -29,12 +33,29 @@ export default function MessageInput({ channelId, replyTo, clearReply }) {
     };
   }, [voiceUrl, channelId, user?.username]);
 
+  useEffect(() => {
+    return () => {
+      if (selectedFileUrl) {
+        URL.revokeObjectURL(selectedFileUrl);
+      }
+    };
+  }, [selectedFileUrl]);
+
   const clearVoiceNote = () => {
     if (voiceUrl) {
       URL.revokeObjectURL(voiceUrl);
     }
     setVoiceUrl(null);
     setFile(null);
+  };
+
+  const clearSelectedFile = () => {
+    setFile(null);
+  };
+
+  const formatFileSize = (size = 0) => {
+    if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   const stopTyping = () => {
@@ -201,6 +222,26 @@ export default function MessageInput({ channelId, replyTo, clearReply }) {
         </div>
       )}
 
+      {file && !voiceUrl && !isRecording && (
+        <div className="selected-file-preview">
+          <div className="selected-file-thumb">
+            {selectedFileUrl ? (
+              <img src={selectedFileUrl} alt={file.name} />
+            ) : (
+              <span>File</span>
+            )}
+          </div>
+          <div className="selected-file-details">
+            <span className="selected-file-label">Selected file</span>
+            <strong>{file.name}</strong>
+            <span>{formatFileSize(file.size)}</span>
+          </div>
+          <button type="button" className="selected-file-remove" onClick={clearSelectedFile}>
+            Remove
+          </button>
+        </div>
+      )}
+
       <form className="input-row" onSubmit={send}>
         <input
           className="chat-input"
@@ -216,7 +257,7 @@ export default function MessageInput({ channelId, replyTo, clearReply }) {
             hidden
             onChange={(e) => {
               clearVoiceNote();
-              setFile(e.target.files[0]);
+              setFile(e.target.files?.[0] || null);
             }}
           />
         </label>

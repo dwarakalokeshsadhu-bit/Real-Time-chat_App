@@ -2622,3 +2622,116 @@ body {
   gap: 8px;
   margin-top: 12px !important;
 }
+
+/* File attachment preview and message layout */
+.selected-file-preview {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border: 1px solid #cfd8e6;
+  border-radius: 9px;
+  background: #f8fbff;
+}
+
+.selected-file-thumb {
+  width: 64px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #dbe3ef;
+  border-radius: 7px;
+  background: #e8f0fa;
+  color: #16325c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.selected-file-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selected-file-details {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  color: #536685;
+  font-size: 13px;
+}
+
+.selected-file-details strong {
+  overflow: hidden;
+  color: #16325c;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-file-label {
+  color: #006dcc;
+  font-weight: 700;
+}
+
+.selected-file-remove {
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid #cfd8e6;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #16325c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.selected-file-remove:hover {
+  border-color: #c23934;
+  color: #c23934;
+}
+
+.file-info {
+  min-height: 70px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 14px 16px !important;
+}
+
+.file-meta {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.download-btn {
+  flex: 0 0 auto;
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .selected-file-preview {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .selected-file-remove {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .file-info {
+    align-items: stretch !important;
+    flex-direction: column;
+  }
+
+  .download-btn {
+    width: 100%;
+  }
+}
