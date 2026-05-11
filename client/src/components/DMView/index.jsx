@@ -18,7 +18,9 @@ export default function DMView() {
   const [editContent, setEditContent] = useState('');
   const scrollContainerRef = useRef(null);
   const bottomRef = useRef(null);
-  const shouldStickToBottomRef = useRef(true);
+  const [isAwayFromBottom, setIsAwayFromBottom] = useState(false);
+  const [newMessageCount, setNewMessageCount] = useState(0);
+  const previousMessageCountRef = useRef(messages.length);
   const previousDMRef = useRef(activeDM?._id);
 
   const other = activeDM?.participants?.find(participant => participant._id !== user?.id);
@@ -47,39 +49,53 @@ export default function DMView() {
     };
   }, [activeDM?._id, user?.username, addDMMessage, updateDMMessage, removeDMMessage]);
 
+  const updateScrollState = () => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const distanceFromBottom =
+      scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
+    setIsAwayFromBottom(distanceFromBottom > 140);
+  };
+
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
-    const handleScroll = () => {
-      const distanceFromBottom =
-        scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
-      shouldStickToBottomRef.current = distanceFromBottom < 140;
-    };
-
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    scrollContainer.addEventListener('scroll', updateScrollState, { passive: true });
+    updateScrollState();
 
     return () => {
-      scrollContainer.removeEventListener('scroll', handleScroll);
+      scrollContainer.removeEventListener('scroll', updateScrollState);
     };
   }, []);
 
   useEffect(() => {
     if (previousDMRef.current !== activeDM?._id) {
       previousDMRef.current = activeDM?._id;
-      shouldStickToBottomRef.current = true;
+      previousMessageCountRef.current = messages.length;
+      setNewMessageCount(0);
+      requestAnimationFrame(updateScrollState);
     }
-  }, [activeDM?._id]);
+  }, [activeDM?._id, messages.length]);
 
   useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    const isOwnNewMessage = lastMessage?.senderId === user?.username;
+    const previousCount = previousMessageCountRef.current;
+    const addedCount = messages.length - previousCount;
 
-    if (shouldStickToBottomRef.current || isOwnNewMessage) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (addedCount > 0 && previousDMRef.current === activeDM?._id) {
+      setNewMessageCount(current => current + addedCount);
     }
-  }, [messages, user?.username]);
+
+    previousMessageCountRef.current = messages.length;
+    requestAnimationFrame(updateScrollState);
+  }, [messages.length, activeDM?._id]);
+
+  const scrollToLatest = () => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    setNewMessageCount(0);
+    requestAnimationFrame(updateScrollState);
+  };
 
   async function submit(event) {
     event.preventDefault();
@@ -188,6 +204,11 @@ export default function DMView() {
             );
           })}
           <div ref={bottomRef}></div>
+          {(isAwayFromBottom || newMessageCount > 0) && (
+            <button type="button" className="scroll-latest-btn" onClick={scrollToLatest}>
+              {newMessageCount > 0 ? `${newMessageCount} new messages` : 'Scroll to latest'}
+            </button>
+          )}
         </div>
       </div>
 

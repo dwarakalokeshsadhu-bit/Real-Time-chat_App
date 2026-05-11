@@ -15,43 +15,58 @@ export default function MessageList({ messages, channelId, setReply }) {
   const [editingId, setEditingId] = useState(null);
   const [editContent, setEditContent] = useState("");
   const bottomRef = useRef();
-  const shouldStickToBottomRef = useRef(true);
+  const [isAwayFromBottom, setIsAwayFromBottom] = useState(false);
+  const [newMessageCount, setNewMessageCount] = useState(0);
+  const previousMessageCountRef = useRef(messages.length);
   const previousChannelRef = useRef(channelId);
 
-  // 🔥 auto scroll
+  const updateScrollState = () => {
+    const scrollContainer = bottomRef.current?.closest(".messages-area");
+    if (!scrollContainer) return;
+
+    const distanceFromBottom =
+      scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
+    setIsAwayFromBottom(distanceFromBottom > 140);
+  };
+
   useEffect(() => {
     const scrollContainer = bottomRef.current?.closest(".messages-area");
     if (!scrollContainer) return;
 
-    const handleScroll = () => {
-      const distanceFromBottom =
-        scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
-      shouldStickToBottomRef.current = distanceFromBottom < 140;
-    };
-
-    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    scrollContainer.addEventListener("scroll", updateScrollState, { passive: true });
+    updateScrollState();
 
     return () => {
-      scrollContainer.removeEventListener("scroll", handleScroll);
+      scrollContainer.removeEventListener("scroll", updateScrollState);
     };
   }, []);
 
   useEffect(() => {
     if (previousChannelRef.current !== channelId) {
       previousChannelRef.current = channelId;
-      shouldStickToBottomRef.current = true;
+      previousMessageCountRef.current = messages.length;
+      setNewMessageCount(0);
+      requestAnimationFrame(updateScrollState);
     }
-  }, [channelId]);
+  }, [channelId, messages.length]);
 
   useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    const isOwnNewMessage = lastMessage?.senderId === user?.username;
+    const previousCount = previousMessageCountRef.current;
+    const addedCount = messages.length - previousCount;
 
-    if (shouldStickToBottomRef.current || isOwnNewMessage) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (addedCount > 0 && previousChannelRef.current === channelId) {
+      setNewMessageCount(current => current + addedCount);
     }
-  }, [messages, user?.username]);
+
+    previousMessageCountRef.current = messages.length;
+    requestAnimationFrame(updateScrollState);
+  }, [messages.length, channelId]);
+
+  const scrollToLatest = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    setNewMessageCount(0);
+    requestAnimationFrame(updateScrollState);
+  };
 
   async function react(messageId, emoji) {
     await api.post(`/messages/${channelId}/${messageId}/reactions`, { emoji });
@@ -238,6 +253,11 @@ export default function MessageList({ messages, channelId, setReply }) {
       })}
 
       <div ref={bottomRef}></div>
+      {(isAwayFromBottom || newMessageCount > 0) && (
+        <button type="button" className="scroll-latest-btn" onClick={scrollToLatest}>
+          {newMessageCount > 0 ? `${newMessageCount} new messages` : "Scroll to latest"}
+        </button>
+      )}
 
     </div>
   );
