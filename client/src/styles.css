@@ -2520,3 +2520,105 @@ body {
     padding: 0 10px !important;
   }
 }
+
+/* Workspace detail fixes */
+.sidebar-brand {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
+  margin: 4px 0 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.sidebar-brand:hover,
+.sidebar-brand:focus-visible {
+  color: #d8edff;
+  outline: none;
+}
+
+.sidebar-brand:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.sidebar .profile-card {
+  display: grid !important;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px !important;
+  margin: 0 0 18px !important;
+  padding: 11px 12px !important;
+  border: 1px solid rgba(216, 237, 255, 0.34) !important;
+  border-radius: 8px !important;
+  background: rgba(216, 237, 255, 0.12) !important;
+  overflow: hidden;
+}
+
+.sidebar .avatar-picker {
+  width: 52px !important;
+  height: 52px !important;
+  border: 2px solid rgba(216, 237, 255, 0.78) !important;
+  border-radius: 50% !important;
+  background: #0061ad !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.sidebar .avatar-picker:hover {
+  border-color: #ffffff !important;
+}
+
+.sidebar .avatar-picker span {
+  font-size: 25px !important;
+  font-weight: 650 !important;
+}
+
+.sidebar .profile-name {
+  font-size: 16px !important;
+  line-height: 1.25 !important;
+  overflow-wrap: anywhere;
+}
+
+.sidebar .profile-action {
+  margin-top: 3px !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+
+.file-card {
+  margin-top: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+.voice-message {
+  width: min(420px, 100%);
+  margin: 0 !important;
+  padding: 14px !important;
+  border-radius: 8px !important;
+}
+
+.voice-message audio {
+  display: block;
+  width: min(400px, 100%) !important;
+}
+
+.reactions {
+  margin-top: 8px !important;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px !important;
+}

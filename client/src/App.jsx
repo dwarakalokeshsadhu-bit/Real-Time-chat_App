@@ -133,7 +133,7 @@ export default function App() {
       )}
 
       {mode === 'workspace' && user ? (
-        <Workspace />
+        <Workspace goHome={() => setMode('home')} />
       ) : mode === 'home' ? (
         <Home
           goToLogin={() => setMode('login')}

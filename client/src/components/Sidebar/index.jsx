@@ -7,7 +7,7 @@ import { useDMStore } from '../../store/dmSlice';
 import DMList from '../DMList';
 import toast from 'react-hot-toast';
 
-export default function Sidebar() {
+export default function Sidebar({ goHome }) {
   const {
     channels,
     activeChannel,
@@ -121,7 +121,9 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <h2>Realtime Chat</h2>
+      <button type="button" className="sidebar-brand" onClick={goHome}>
+        Realtime Chat
+      </button>
 
       <div className="profile-card">
         <label className="avatar-picker" title="Change profile picture">

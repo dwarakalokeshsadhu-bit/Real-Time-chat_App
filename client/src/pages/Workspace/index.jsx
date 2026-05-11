@@ -7,14 +7,14 @@ import { useChannelStore } from '../../store/channelSlice';
 import { useDMStore } from '../../store/dmSlice';
 import { useSocket } from '../../hooks/useSocket';
 
-export default function Workspace() {
+export default function Workspace({ goHome }) {
   const { activeChannel, fetchChannels } = useChannelStore();
   const activeDM = useDMStore(s => s.activeDM);
   useEffect(() => { fetchChannels(); }, []);
   useSocket(activeChannel?._id);
-   return (
+  return (
   <div className="workspace">
-    <Sidebar />
+    <Sidebar goHome={goHome} />
     {activeDM ? <DMView /> : <ChannelView channelId={activeChannel?._id} />}
   </div>
 );;
