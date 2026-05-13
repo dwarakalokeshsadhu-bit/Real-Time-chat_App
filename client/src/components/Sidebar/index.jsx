@@ -5,6 +5,7 @@ import { useMessageStore } from '../../store/messageSlice';
 import { usePresenceStore } from '../../store/presenceSlice';
 import { useDMStore } from '../../store/dmSlice';
 import DMList from '../DMList';
+import Avatar from '../Avatar';
 import toast from 'react-hot-toast';
 
 export default function Sidebar({ goHome }) {
@@ -110,6 +111,9 @@ export default function Sidebar({ goHome }) {
 
     try {
       await uploadAvatar(file);
+      const updatedUser = useAuthStore.getState().user;
+      useMessageStore.getState().updateSenderAvatar(updatedUser?.username, updatedUser?.avatarUrl);
+      useDMStore.getState().updateUserAvatar(updatedUser?.username, updatedUser?.avatarUrl);
       if (activeChannel?._id) await fetchMessages(activeChannel._id);
       if (activeDM?._id) await fetchDMMessages(activeDM._id);
       await fetchDMs();
@@ -126,12 +130,12 @@ export default function Sidebar({ goHome }) {
       </button>
 
       <div className="profile-card">
-        <label className="avatar-picker" title="Change profile picture">
-          {user?.avatarUrl ? (
-            <img src={user.avatarUrl} alt={user.username || "Profile"} />
-          ) : (
-            <span>{avatarInitial}</span>
-          )}
+        <label title="Change profile picture">
+          <Avatar
+            src={user?.avatarUrl}
+            name={user?.username || avatarInitial}
+            className="avatar-picker"
+          />
           <input
             type="file"
             accept="image/*"

@@ -518,6 +518,11 @@ body:has(.workspace-mode),
   cursor: pointer;
 }
 
+.profile-card label {
+  display: block;
+  cursor: pointer;
+}
+
 .avatar-picker img,
 .message-avatar img,
 .dm-results img,

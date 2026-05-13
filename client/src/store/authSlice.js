@@ -35,6 +35,15 @@ export const useAuthStore = create(set => ({
     set({ user: data.user });
     return data.user;
   },
+  updateUserAvatar(username, avatarUrl) {
+    set(state => {
+      if (!state.user || state.user.username !== username) return state;
+
+      const user = { ...state.user, avatarUrl: avatarUrl || '' };
+      localStorage.setItem('user', JSON.stringify(user));
+      return { user };
+    });
+  },
   loginWithProvider(provider) {
     window.location.href = `${api.defaults.baseURL}/auth/${provider}`;
   },

@@ -22,6 +22,18 @@ export const usePresenceStore = create((set) => ({
     });
   },
 
+  updateUserAvatar: (username, avatarUrl) => {
+    if (!username) return;
+
+    set((state) => ({
+      onlineUsers: state.onlineUsers.map(user =>
+        user.username === username
+          ? { ...user, avatarUrl: avatarUrl || '' }
+          : user
+      )
+    }));
+  },
+
   clearTypingForChannel: (channelId) => {
     set((state) => ({
       typingUsers: state.typingUsers.filter((entry) => entry.channelId !== channelId)

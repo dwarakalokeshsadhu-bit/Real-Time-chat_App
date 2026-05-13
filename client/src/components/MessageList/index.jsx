@@ -4,6 +4,7 @@ import { useMessageStore } from '../../store/messageSlice';
 import { useAuthStore } from '../../store/authSlice';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
+import Avatar from '../Avatar';
 
 export default function MessageList({ messages, channelId, setReply }) {
 
@@ -114,13 +115,7 @@ export default function MessageList({ messages, channelId, setReply }) {
 
             {/* 🔥 Username */}
             <div className="message-user-row">
-              <div className="message-avatar">
-                {getSenderAvatar(m) ? (
-                  <img src={getSenderAvatar(m)} alt={m.senderId || 'User'} />
-                ) : (
-                  <span>{(m.senderId || 'U').charAt(0).toUpperCase()}</span>
-                )}
-              </div>
+              <Avatar src={getSenderAvatar(m)} name={m.senderId || 'User'} />
               <div className="message-meta">
                 <span className="message-user">
                   {m.senderId || 'User'}

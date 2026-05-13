@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from '../../store/authSlice';
 import { useDMStore } from '../../store/dmSlice';
 import { socket } from '../../hooks/useSocket';
+import Avatar from '../Avatar';
 
 export default function DMView() {
   const user = useAuthStore(s => s.user);
@@ -150,13 +151,7 @@ export default function DMView() {
               <div key={message._id} className={isMine ? 'message mine' : 'message'}>
                 <div className="message-card">
                   <div className="message-user-row">
-                    <div className="message-avatar">
-                      {getSenderAvatar(message) ? (
-                        <img src={getSenderAvatar(message)} alt={message.senderId || 'User'} />
-                      ) : (
-                        <span>{(message.senderId || 'U').charAt(0).toUpperCase()}</span>
-                      )}
-                    </div>
+                    <Avatar src={getSenderAvatar(message)} name={message.senderId || 'User'} />
                     <div className="message-meta">
                       <span className="message-user">{message.senderId}</span>
                       <span className="message-date">{formatMessageDate(message.createdAt)}</span>

@@ -71,6 +71,34 @@ export const useDMStore = create((set, get) => ({
     }));
   },
 
+  updateUserAvatar: (username, avatarUrl) => {
+    if (!username) return;
+
+    const updateParticipant = (participant) =>
+      participant?.username === username
+        ? { ...participant, avatarUrl: avatarUrl || '' }
+        : participant;
+
+    set((state) => ({
+      conversations: state.conversations.map(conversation => ({
+        ...conversation,
+        participants: (conversation.participants || []).map(updateParticipant)
+      })),
+      activeDM: state.activeDM
+        ? {
+            ...state.activeDM,
+            participants: (state.activeDM.participants || []).map(updateParticipant)
+          }
+        : state.activeDM,
+      userResults: state.userResults.map(updateParticipant),
+      dmMessages: state.dmMessages.map(message =>
+        message.senderId === username
+          ? { ...message, senderAvatarUrl: avatarUrl || '' }
+          : message
+      )
+    }));
+  },
+
   editDMMessage: async (messageId, content) => {
     const activeDM = get().activeDM;
     if (!activeDM || !content.trim()) return;

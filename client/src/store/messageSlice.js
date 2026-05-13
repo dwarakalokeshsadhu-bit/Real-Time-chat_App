@@ -92,6 +92,18 @@ async sendMessage(channelId, content, replyTo, fileUrl, fileType) {
     });
   },
 
+  updateSenderAvatar(username, avatarUrl) {
+    if (!username) return;
+
+    set({
+      messages: get().messages.map(message =>
+        message.senderId === username
+          ? { ...message, senderAvatarUrl: avatarUrl || '' }
+          : message
+      )
+    });
+  },
+
   removeExpiredMessages() {
     set({
       messages: get().messages.filter(message => !isExpired(message))

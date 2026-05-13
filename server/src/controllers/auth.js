@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import { ApiError, asyncHandler } from '../utils/errors.js';
 import { signAccessToken } from '../utils/jwt.js';
 import { env } from '../config/env.js';
+import { getIO } from '../sockets/index.js';
 
 const cleanUser = user => ({
   id: user._id,
@@ -168,6 +169,11 @@ export const updateAvatar = asyncHandler(async (req, res) => {
     { avatarUrl },
     { new: true }
   );
+
+  getIO()?.emit('user:avatarUpdated', {
+    username: user.username,
+    avatarUrl: user.avatarUrl
+  });
 
   res.json({ success: true, user: cleanUser(user) });
 });
