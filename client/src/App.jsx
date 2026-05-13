@@ -29,6 +29,15 @@ const teamMembers = [
   },
 ];
 
+const appFeatures = [
+  'Realtime group messaging with live channel updates',
+  'Direct messages for private conversations',
+  'File, image, and voice message sharing',
+  'Audio and video call controls inside chat',
+  'Online presence, member lists, and profile avatars',
+  'Google login plus required email, password, and username fields',
+  'Disappearing message options for channel conversations',
+];
 
 function AboutView() {
   return (
