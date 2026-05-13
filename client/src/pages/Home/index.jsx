@@ -7,16 +7,16 @@ export default function Home({ goToLogin, goToRegister }) {
       <section className="home-shell">
         <div className="home-copy">
           <p className="home-kicker">Realtime chat workspace</p>
-          <h1>Bring every conversation into one warm, focused room.</h1>
+          <h1>Welcome to ChatRoom</h1>
           <p className="home-subtitle">
-            Message teams, share files, start calls, and keep direct chats moving with a clean collaborative workspace.
+            A clean messaging space where teams can talk in channels, share files, make calls, and keep direct conversations easy to follow.
           </p>
           <div className="home-actions">
             <button type="button" className="home-primary" onClick={goToLogin}>
-              Get started
+              Sign In
             </button>
             <button type="button" className="home-secondary" onClick={goToRegister}>
-              Create account
+              Create Account
             </button>
           </div>
         </div>

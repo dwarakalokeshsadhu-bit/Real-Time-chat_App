@@ -16,12 +16,12 @@ const teamMembers = [
     profile: 'https://www.linkedin.com/in/dwaraka-lokesh-sadhu-286627323/',
   },
   {
-    name: 'Shaik Sadiq',
+    name: 'Sadiq',
     profile: 'https://www.linkedin.com/in/shaik-sadiq-b1650a377/',
   },
   {
     name: 'Jashvitha',
-    profile: 'https://www.linkedin.com/in/jashvitha-k-304a62356/',
+    profile: 'https://www.linkedin.com/in/jashvitha-k-13a8ba408/',
   },
   {
     name: 'Sashreek',
@@ -29,15 +29,6 @@ const teamMembers = [
   },
 ];
 
-const appFeatures = [
-  'Realtime group messaging with live channel updates',
-  'Direct messages for private conversations',
-  'File, image, and voice message sharing',
-  'Audio and video call controls inside chat',
-  'Online presence, member lists, and profile avatars',
-  'Google login plus required email, password, and username fields',
-  'Disappearing message options for channel conversations',
-];
 
 function AboutView() {
   return (
@@ -101,34 +92,39 @@ export default function App() {
     <div className={mode === 'workspace' && user ? 'public-page workspace-mode' : 'public-page'}>
       {showPublicChrome && (
         <nav className="app-navbar" aria-label="Primary navigation">
-          <button
-            type="button"
-            className={mode === 'home' ? 'active' : ''}
-            onClick={() => setMode('home')}
-          >
-            Home
+          <button type="button" className="nav-brand" onClick={() => setMode('home')}>
+            ChatRoom
           </button>
-          <button
-            type="button"
-            className={mode === 'about' ? 'active' : ''}
-            onClick={() => setMode('about')}
-          >
-            About
-          </button>
-          <button
-            type="button"
-            className={mode === 'login' ? 'active' : ''}
-            onClick={() => setMode('login')}
-          >
-            Login
-          </button>
-          <button
-            type="button"
-            className={mode === 'register' ? 'active' : ''}
-            onClick={() => setMode('register')}
-          >
-            Required Fields
-          </button>
+          <div className="nav-links">
+            <button
+              type="button"
+              className={mode === 'home' ? 'active' : ''}
+              onClick={() => setMode('home')}
+            >
+              Home
+            </button>
+            <button
+              type="button"
+              className={mode === 'about' ? 'active' : ''}
+              onClick={() => setMode('about')}
+            >
+              About
+            </button>
+            <button
+              type="button"
+              className={mode === 'register' ? 'active' : ''}
+              onClick={() => setMode('register')}
+            >
+              Register
+            </button>
+            <button
+              type="button"
+              className={mode === 'login' ? 'active' : ''}
+              onClick={() => setMode('login')}
+            >
+              Login
+            </button>
+          </div>
         </nav>
       )}
 
@@ -149,16 +145,52 @@ export default function App() {
 
       {showFooter && (
         <footer className="team-footer">
-          <div>
-            <p className="footer-kicker">LinkedIn profiles</p>
-            <h2>Team members</h2>
+          <div className="footer-main">
+            <section className="footer-brand">
+              <div className="footer-brand-row">
+                <span className="footer-mark" aria-hidden="true">C</span>
+                <h2>ChatRoom</h2>
+              </div>
+              <p>
+                A realtime chat application for fast team conversations, direct messages, file sharing,
+                calls, and presence in one focused workspace.
+              </p>
+            </section>
+
+           
+
+            <section className="footer-column">
+              <h3>LinkedIn Profiles</h3>
+              <ul>
+                {teamMembers.map(member => (
+                  <li key={member.name}>
+                    <a href={member.profile} target="_blank" rel="noreferrer">
+                      {member.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="footer-column">
+              <h3>Contact & Legal</h3>
+              <ul>
+                <li>Realtime Chat Workspace</li>
+                <li>support@chatroom.app</li>
+                <li><a href="#terms">Terms of Use</a></li>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#cookies">Cookie Policy</a></li>
+              </ul>
+            </section>
           </div>
-          <div className="team-links">
-            {teamMembers.map(member => (
-              <a key={member.name} href={member.profile} target="_blank" rel="noreferrer">
-                {member.name}
-              </a>
-            ))}
+
+          <div className="footer-bottom">
+            <p>© 2026 <strong>ChatRoom</strong>. All rights reserved.</p>
+            <div className="footer-status" aria-label="Application status">
+              <span>System Operational</span>
+              <span>Realtime messaging</span>
+              <span>Secure sessions</span>
+            </div>
           </div>
         </footer>
       )}
